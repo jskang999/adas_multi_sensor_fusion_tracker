@@ -1,6 +1,6 @@
 # Multi Sensor Fusion Tracker (C++ / ADAS-style)
 
-자율주행 / ADAS 센서 퓨전 포트폴리오용 C++ 프로젝트입니다.
+자율주행 / ADAS 센서 퓨전 C++ 프로젝트입니다.
 
 - 2D 평면 상에서 여러 차량(Object)을 **Constant Velocity Kalman Filter**로 추적
 - **Camera + Radar 센서 측정값**을 이용한 **센서 퓨전 + 다중 객체 추적**
@@ -77,5 +77,3 @@ docs/            # Design notes
 ---
 
 ## License
-
-(원하는 라이선스를 여기에 추가)
