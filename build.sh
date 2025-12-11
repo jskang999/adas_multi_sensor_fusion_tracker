@@ -11,6 +11,3 @@ cmake .. -DBUILD_EXAMPLES=ON
 make -j
 
 ./run_simulation 5 300 "$ROOT_DIR/output"
-
-cd "$ROOT_DIR"
-python3 tools/plot_tracks.py
