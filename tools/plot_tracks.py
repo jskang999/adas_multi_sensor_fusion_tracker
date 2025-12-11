@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 import csv
+from pathlib import Path
 import matplotlib.pyplot as plt
 
-def load_tracks(filename):
+ROOT_DIR = Path(__file__).resolve().parent.parent
+OUTPUT_DIR = ROOT_DIR / "output"
+
+def load_tracks(filename: Path):
     data = {}
-    with open(filename, newline='') as f:
+    with filename.open(newline='') as f:
         reader = csv.DictReader(f)
         for row in reader:
             tid = int(row["track_id"])
@@ -18,9 +22,9 @@ def load_tracks(filename):
             data[tid]["y"].append(y)
     return data
 
-def load_gt(filename):
+def load_gt(filename: Path):
     data = {}
-    with open(filename, newline='') as f:
+    with filename.open(newline='') as f:
         reader = csv.DictReader(f)
         for row in reader:
             oid = int(row["obj_id"])
@@ -35,8 +39,16 @@ def load_gt(filename):
     return data
 
 def main():
-    gt = load_gt("ground_truth.csv")
-    tracks = load_tracks("tracks.csv")
+    gt_file = OUTPUT_DIR / "ground_truth.csv"
+    tracks_file = OUTPUT_DIR / "tracks.csv"
+
+    if not gt_file.exists() or not tracks_file.exists():
+        print(f"Cannot find CSV files in {OUTPUT_DIR}.")
+        print("Run the simulation first (e.g., ./run_all.sh).")
+        return
+
+    gt = load_gt(gt_file)
+    tracks = load_tracks(tracks_file)
 
     plt.figure()
     # ground truth 궤적

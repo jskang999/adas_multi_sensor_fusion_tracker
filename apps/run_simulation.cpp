@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <string>
 
 #include "tracker.hpp"
 #include "highway_scenario.hpp"
@@ -19,8 +20,20 @@ int main(int argc, char** argv) {
         num_steps = std::stoi(argv[2]);
     }
 
+    std::string out_dir = ".";
+    if (argc >= 4) {
+        out_dir = argv[3];
+    }
+    if (!out_dir.empty()) {
+        char last = out_dir.back();
+        if (last != '/' && last != '\\') {
+            out_dir += "/";
+        }
+    }
+
     std::cout << "Running simulation: objects=" << num_objects
               << ", steps=" << num_steps << ", dt=" << dt << "s\n";
+    std::cout << "Output directory: " << out_dir << "\n";
 
     HighwayScenario scenario(num_objects, dt);
 
@@ -45,9 +58,14 @@ int main(int argc, char** argv) {
 
     MultiSensorTracker tracker(params);
 
-    std::ofstream gt_file("ground_truth.csv");
-    std::ofstream track_file("tracks.csv");
-    std::ofstream det_file("detections.csv");
+    std::ofstream gt_file(out_dir + "ground_truth.csv");
+    std::ofstream track_file(out_dir + "tracks.csv");
+    std::ofstream det_file(out_dir + "detections.csv");
+
+    if (!gt_file || !track_file || !det_file) {
+        std::cerr << "Failed to open output CSV files. Check output directory." << std::endl;
+        return 1;
+    }
 
     gt_file << "time,obj_id,x,y,vx,vy\n";
     track_file << "time,track_id,x,y,vx,vy,confirmed,missed\n";
@@ -99,7 +117,7 @@ int main(int argc, char** argv) {
     }
 
     std::cout << "Simulation finished.\n";
-    std::cout << "Generated files: ground_truth.csv, tracks.csv, detections.csv\n";
+    std::cout << "Generated files in: " << out_dir << "\n";
 
     return 0;
 }

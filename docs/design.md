@@ -66,4 +66,5 @@
   - `tracks.csv`
   - `detections.csv`
 
-  which can be visualized with `tools/plot_tracks.py`.
+  into an `output/` directory at the project root, which can be visualized with
+  `tools/plot_tracks.py`.
